@@ -8,7 +8,7 @@ from time import process_time
 import concurrent.futures
 import random
 
-server_address = ('172.16.16.101', 12000)
+server_address = ('localhost', 12000)
 
 def make_socket(destination_address='localhost',port=12000):
     try:
@@ -54,11 +54,12 @@ def send_command(command_str,is_secure=False):
 
 
 def getdatapemain(nomor=0,is_secure=False):
+    start_time = process_time()
     cmd=f"getdatapemain {nomor}\r\n\r\n"
     hasil = send_command(cmd,is_secure=is_secure)
     if (hasil):
-        print(hasil['name'], hasil['position'])
-        return hasil 
+        print(hasil['nama'], hasil['posisi'])
+        return process_time() - start_time
     else: 
         return False
 
@@ -94,8 +95,6 @@ def multi_thread(latency=0, client_worker=0):
         if (hasil):
             response_count += 1
             latency += hasil
-        else:
-            print("iwioeuwoiuiowueoiwuioeuqwioeuqiowueioquweioqueouqwoieuqwioeuiqwoueiwqouqeouqwioeuioqwueioqwueiou")
     
     finish_time = process_time()
     execution_time = finish_time - start_time
