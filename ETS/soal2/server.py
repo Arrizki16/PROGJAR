@@ -1,13 +1,14 @@
 from ast import arg
 from multiprocessing import connection
 import sys
-import socket
+import socket   
 import logging
 import json
 import os
 import ssl
 import threading
 import time
+from time import sleep
 
 list_player = dict()
 
@@ -44,6 +45,8 @@ def proses_request(request_string):
             hasil = versi()
     except:
         hasil = None
+    
+    sleep(0.1)
     return hasil
 
 
