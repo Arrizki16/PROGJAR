@@ -74,7 +74,6 @@ if __name__=='__main__':
     server_address=('127.0.0.1',6666)
     remote_list()
     remote_get(filename="pokijan.jpg")
-    # remote_post(filename=)
-    # remote_delete(filename=)
-    #remote_get('donalbebek.jpg')
+    remote_get(filename="donalbebek.jpg")
+
 

@@ -16,12 +16,14 @@ def make_socket(destination_address='localhost',port=12000):
         context.verify_mode=ssl.CERT_OPTIONAL
 
         context.load_verify_locations(os.getcwd() + '/certs/domain.crt')
-        
+
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_address = (destination_address, port)
         logging.warning(f"connecting to {server_address}")
+
         sock.connect(server_address)
-        return sock
+        secure_socket = context.wrap_socket(sock, server_hostname=destination_address)
+        return secure_socket
     
     except Exception as ee:
         logging.warning(f"error {str(ee)}")
@@ -31,7 +33,7 @@ def deserialisasi(s):
     return json.loads(s)
     
 
-def send_command(command_str,is_secure=False):
+def send_command(command_str):
     alamat_server = server_address[0]
     port_server = server_address[1]
     
@@ -58,10 +60,10 @@ def send_command(command_str,is_secure=False):
         return False
 
 
-def getdatapemain(nomor=0,is_secure=False):
+def getdatapemain(nomor=0):
     start_time = process_time()
     cmd=f"getdatapemain {nomor}\r\n\r\n"
-    hasil = send_command(cmd,is_secure=is_secure)
+    hasil = send_command(cmd)
     if (hasil):
         print(hasil['nama'], hasil['posisi'])
         return process_time() - start_time
@@ -69,9 +71,9 @@ def getdatapemain(nomor=0,is_secure=False):
         return False
 
 
-def lihatversi(is_secure=False):
+def lihatversi():
     cmd=f"versi \r\n\r\n"
-    hasil = send_command(cmd,is_secure=is_secure)
+    hasil = send_command(cmd)
     return hasil
 
 def get_output(client_worker, request_count, response_count, latency, execution_time):
@@ -83,7 +85,7 @@ def get_output(client_worker, request_count, response_count, latency, execution_
 
 
 def multi_thread(latency=0, client_worker=0):
-    request_count = 2000
+    request_count = 1000
     response_count = 0
     
     job = {}
@@ -102,7 +104,7 @@ def multi_thread(latency=0, client_worker=0):
             latency += hasil
     
     finish_time = process_time()
-    execution_time = finish_time - start_time
+    execution_time = finish_time - start_time   
     get_output(client_worker, request_count, response_count, latency, execution_time)
 
 if __name__=='__main__':

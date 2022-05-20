@@ -50,9 +50,10 @@ def proses_request(request_string):
     return hasil
 
 
-def handle_request(connection, client_address):
+def handle_request(connection, client_address, socket_context):
     data_received=""
     selesai=False
+    connection = socket_context.wrap_socket(connection, server_side=True)
     while True:
         data = connection.recv(32)
         logging.warning(f"received {data}")
@@ -103,7 +104,7 @@ def run_server(server_address):
         koneksi, client_address = sock.accept()
         logging.warning(f"Incoming connection from {client_address}")
 
-        client = threading.Thread(target=handle_request, args=(koneksi, client_address))
+        client = threading.Thread(target=handle_request, args=(koneksi, client_address, socket_context))
         client.start()
 
         logging.warning(f'{client.name} started')
