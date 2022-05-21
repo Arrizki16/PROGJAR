@@ -2,6 +2,7 @@ import socket
 import json
 import base64
 import logging
+import os
 
 server_address=('0.0.0.0',6666)
 
@@ -29,7 +30,6 @@ def send_command(command_str=""):
         # at this point, data_received (string) will contain all data coming from the socket
         # to be able to use the data_received as a dict, need to load it using json.loads()
         hasil = json.loads(data_received)
-        print(f"ini adalah hasil dari data yang diproses dari server : {hasil}")
         logging.warning("data received from server:")
         return hasil
     except:
@@ -65,15 +65,33 @@ def remote_get(filename=""):
         return False
 
 def remote_post(filename=""):
-    pass
+    posts = f"\post\{filename}"
+    file_path = os.getcwd()+posts
+    if os.path.exists(file_path):
+        print("file ada")
+    else:
+        print("file tidak ada")
+    
 
 def remote_delete(filename=""):
-    pass
-
+    command_str=f"DELETE {filename}"
+    hasil = send_command(command_str)
+    if (hasil['status']=='OK'):
+        print(hasil['msg'])
+        return True
+    else:
+        print("Gagal")
+        return False
+        
 if __name__=='__main__':
     server_address=('127.0.0.1',6666)
     remote_list()
     remote_get(filename="pokijan.jpg")
     remote_get(filename="donalbebek.jpg")
+    remote_get(filename="rfc2616.pdf")
+    remote_delete(filename="pokijan.jpg")
+    remote_delete(filename="donalbebek.jpg")
+    remote_delete(filename="rfc2616.pdf")
+    # remote_post(filename="pdm_bangkit.jpeg")
 
 

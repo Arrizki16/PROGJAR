@@ -23,7 +23,6 @@ class ProcessTheClient(threading.Thread):
                 d = data.decode()
                 hasil = fp.proses_string(d)
                 hasil=hasil+"\r\n\r\n"
-                print(f"hasil decode data : {hasil}")
                 self.connection.sendall(hasil.encode())
             else:
                 break

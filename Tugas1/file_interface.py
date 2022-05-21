@@ -24,10 +24,24 @@ class FileInterface:
             return dict(status='OK',data_namafile=filename,data_file=isifile)
         except Exception as e:
             return dict(status='ERROR',data=str(e))
-
-
-
+    
+    def post(self, filename=''):
+        if(filename==''):
+            return None
+        try:
+            ### methods post 
+            pass
+        except Exception as e:
+            return dict(status='ERROR',data=str(e))
+        
+    def delete(self, filename=''):
+        if(filename==''):
+            return None
+        try:
+            os.remove(filename)
+            return dict(status='OK', msg=f"File {filename} berhasil dihapus")
+        except Exception as e:
+            return dict(status='ERROR',data=str(e))
+        
 if __name__=='__main__':
     f = FileInterface()
-    print(f.list())
-    print(f.get('pokijan.jpg'))

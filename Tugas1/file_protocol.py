@@ -28,9 +28,15 @@ class FileProtocol:
             logging.warning(f"memproses request: {c_request}")
             if (c_request=='LIST'):
                 return json.dumps(self.file.list())
-            elif (c_request=='GET'):
+            elif (c_request=='GET' ):
                 param1 = c[1].strip()
                 return json.dumps(self.file.get(param1))
+            elif (c_request=='POST'):
+                param1 = c[1].strip()
+                return json.dumps(self.file.post(param1))
+            elif (c_request=='DELETE'):
+                param1 = c[1].strip()
+                return json.dumps(self.file.delete(param1))
             else:
                 return json.dumps(dict(status='ERROR', data='request tidak dikenali'))
         except Exception:
@@ -40,5 +46,5 @@ class FileProtocol:
 if __name__=='__main__':
     #contoh pemakaian
     fp = FileProtocol()
-    print(fp.proses_string("LIST"))
-    print(fp.proses_string("GET pokijan.jpg"))
+    # print(fp.proses_string("LIST"))
+    # print(fp.proses_string("GET pokijan.jpg"))
