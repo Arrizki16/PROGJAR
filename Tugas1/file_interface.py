@@ -15,7 +15,8 @@ class FileInterface:
         except Exception as e:
             return dict(status='ERROR',data=str(e))
 
-    def get(self,filename=''):
+    def get(self, params=[]):
+        filename = params[0]
         if(filename==''):
             return None
         try:
@@ -25,7 +26,8 @@ class FileInterface:
         except Exception as e:
             return dict(status='ERROR',data=str(e))
     
-    def post(self, filename=''):
+    def post(self, params=[]):
+        filename = params[0]
         if(filename==''):
             return None
         try:
@@ -34,7 +36,8 @@ class FileInterface:
         except Exception as e:
             return dict(status='ERROR',data=str(e))
         
-    def delete(self, filename=''):
+    def delete(self, params=[]):
+        filename = params[0]
         if(filename==''):
             return None
         try:
