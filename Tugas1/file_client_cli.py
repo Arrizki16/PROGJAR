@@ -10,9 +10,12 @@ server_address=('0.0.0.0',6666)
 def send_command(command_str=""):
     global server_address
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(server_address)
     logging.warning(f"connecting to {server_address}")
+    sock.connect(server_address)
+    logging.warning(f"connected to server")
+
     command_str += "\n"
+
     try:
         logging.warning(f"sending message ")
         sock.sendall(command_str.encode())
@@ -58,20 +61,19 @@ def remote_get(filename=""):
         print("Gagal")
         return False
 
-def remote_post(filename="",data=""):
-    if (data == ""):
-        try:
-            with open(filename,'rb') as fp:
-                data = base64.b64encode(fp.read()).decode('utf-8')
-        except FileNotFoundError:
-            print("error: file not found")
-            return False
-        except Exception as e:
-            print(f"error: {e}")
-            return False
+def remote_delete(filename=""):
+    command_str=f"DELETE {filename}"
+    hasil = send_command(command_str)
+    if not remote_error(hasil):
+        print("File berhasil dihapus")
+        return True
+    else:
+        print("Gagal")
+        return False
 
-    if " " in filename:
-        filename = f'"{filename}"'
+def remote_post(filename="",data=""):
+    fp = open(filename,'rb')
+    data = base64.b64encode(fp.read()).decode('utf-8')
 
     command_str=f"POST {filename} {data}"
     hasil = send_command(command_str)
@@ -81,16 +83,6 @@ def remote_post(filename="",data=""):
     else:
         print("Gagal")
         return False
-
-def remote_delete(filename=""):
-    command_str=f"DELETE {filename}"
-    hasil = send_command(command_str)
-    if (hasil['status']=='OK'):
-        print(f"Error message: {hasil['data']}")
-        return False
-    else:
-        print("Gagal")
-        return True
     
 def remote_error(hasil):
     if (hasil['status']=='OK'):
@@ -110,6 +102,6 @@ if __name__=='__main__':
     remote_delete(filename="pokijan.jpg")
     remote_delete(filename="donalbebek.jpg")
     remote_delete(filename="rfc2616.pdf")
-    remote_post(filename="pdm_bangkit.jpeg")
+    remote_post(filename="data.txt")
 
 

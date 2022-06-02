@@ -26,16 +26,23 @@ class FileInterface:
         except Exception as e:
             return dict(status='ERROR',data=str(e))
     
-    def post(self, params=[]):
-        filename = params[0]
-        if(filename==''):
-            return None
+    def post(self,params=[]):
         try:
-            ### methods post 
-            pass
+            filename = params[0]
+            data = params[1]
+
+            fp = open(f"{filename}",'xb')
+            fp.write(base64.b64decode(data))
+            fp.close()
+
+            return dict(status='OK',data=filename)
+        except IndexError:
+            return dict(status='ERROR',data='some parameters are missing')
+        except FileExistsError:
+            return dict(status='ERROR',data='filename already exists')
         except Exception as e:
             return dict(status='ERROR',data=str(e))
-        
+    
     def delete(self, params=[]):
         filename = params[0]
         if(filename==''):
