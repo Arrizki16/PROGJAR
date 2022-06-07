@@ -30,7 +30,7 @@ class ProcessTheClient(threading.Thread):
         self.connection.close()
 
 class Server(threading.Thread):
-    def __init__(self,ipaddress='0.0.0.0',port=8889):
+    def __init__(self,ipaddress='172.16.16.101',port=8889):
         self.ipinfo=(ipaddress,port)
         self.the_clients = []
         self.my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -50,7 +50,7 @@ class Server(threading.Thread):
             self.the_clients.append(clt)
 
 def main():
-    svr = Server(ipaddress='0.0.0.0',port=6666)
+    svr = Server(ipaddress='172.16.16.101',port=6666)
     svr.start()
 
 if __name__ == "__main__":

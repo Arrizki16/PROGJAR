@@ -5,7 +5,7 @@ import logging
 import shlex
 
 # Mesin 1 sebagai server
-server_address=('0.0.0.0',6666)
+server_address=('172.16.16.101',6666)
 
 def send_command(command_str=""):
     global server_address
@@ -38,7 +38,7 @@ def send_command(command_str=""):
 def remote_list():
     command_str=f"LIST"
     hasil = send_command(command_str)
-    if (hasil['status']=='OK'):
+    if not remote_error(hasil):
         print("daftar file : ")
         for nmfile in hasil['data']:
             print(f"- {nmfile}")
@@ -94,7 +94,7 @@ def remote_error(hasil):
     return True
 
 if __name__=='__main__':
-    server_address=('127.0.0.1',6666)
+    server_address=('172.16.16.101',6666)
     remote_list()
     remote_get(filename="pokijan.jpg")
     remote_get(filename="donalbebek.jpg")
@@ -103,5 +103,3 @@ if __name__=='__main__':
     remote_delete(filename="donalbebek.jpg")
     remote_delete(filename="rfc2616.pdf")
     remote_post(filename="data.txt")
-
-
